@@ -22,8 +22,10 @@ def handle_hello():
     return jsonify(response_body), 200
 
 
-@api.route('/login', methods=['POST'])
-def login():
+#por qué api y no app?
+
+@api.route('/token', methods=['POST'])
+def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
     user = User.query.filter(User.email == email, User.password == password, User.is_active == True).first
@@ -34,7 +36,7 @@ def login():
                         "access_token": access_token}
         return jsonify(response_body), 200
     else:
-        response_body = {"message": "Bad username, you idiot, pass or user inactive"}
+        response_body = {"message": "Bad username, pass or user inactive, you idiot"}
         return jsonify(response_body), 401
 
 @api.route("/private", methods=["GET"])
