@@ -5,7 +5,7 @@ export const LoginForm = () => {
   const { store, actions } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const token = sessionStorage.setItem("token");
+  const token = sessionStorage.setItem("token", "hola");
 
   const handleClick = () => {
     const opts = {
@@ -28,7 +28,7 @@ export const LoginForm = () => {
       })
       .then((data) => {
         console.log("this came from the back", data);
-        sessionStorage.setItem("token", "data.access_token");
+        sessionStorage.setItem("token", data.access_token);
       })
       .catch((error) => {
         console.error("there was an error", error);
@@ -37,45 +37,49 @@ export const LoginForm = () => {
 
   return (
     <div className="m-auto col-6 col-xs-6 col-sm-6 col-m-4 col-lg-3 col-xl-2">
-      <div className="Auth-form-container">
-        <form className="Auth-form">
-          <div className="Auth-form-content">
-            <h3 className="Auth-form-title">Sign In</h3>
-            <div className="form-group mt-3">
-              <label>Email address</label>
-              <input
-                type="email"
-                className="form-control mt-1"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+      {token && token != "" && token != undefined ? (
+        "You're logged in with this token" + token
+      ) : (
+        <div className="Auth-form-container">
+          <form className="Auth-form">
+            <div className="Auth-form-content">
+              <h3 className="Auth-form-title">Sign In</h3>
+              <div className="form-group mt-3">
+                <label>Email address</label>
+                <input
+                  type="email"
+                  className="form-control mt-1"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="form-group mt-3">
+                <label>Password</label>
+                <input
+                  type="password"
+                  className="form-control mt-1"
+                  value={password}
+                  placeholder="Also your password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="d-grid gap-2 mt-3">
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  onClick={handleClick}
+                >
+                  Login
+                </button>
+              </div>
+              <p className="forgot-password text-right mt-2">
+                Forgot <a href="#">password?</a>
+              </p>
             </div>
-            <div className="form-group mt-3">
-              <label>Password</label>
-              <input
-                type="password"
-                className="form-control mt-1"
-                value={password}
-                placeholder="Also your password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="d-grid gap-2 mt-3">
-              <button
-                type="submit"
-                className="btn btn-primary"
-                onClick={handleClick}
-              >
-                Login
-              </button>
-            </div>
-            <p className="forgot-password text-right mt-2">
-              Forgot <a href="#">password?</a>
-            </p>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
